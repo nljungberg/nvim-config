@@ -200,8 +200,8 @@ require("lazy").setup({
   cmd = "Copilot", event = "InsertEnter",
   config = function()
     require("copilot").setup({
-      suggestion = { enabled = false },  -- we’ll use copilot-cmp for suggestions
-      panel = { enabled = false }
+      suggestion = { enabled = true },  -- we’ll use copilot-cmp for suggestions
+      panel = { enabled = false },
     })
   end
 },
@@ -234,7 +234,26 @@ require("lazy").setup({
         options = { theme = "tokyonight", section_separators = "", component_separators = "" }
       })
     end
-  }
+  },
+
+-- CopilotChat:
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      "zbirenbaum/copilot.lua",      -- your completion engine
+      { "nvim-lua/plenary.nvim", branch = "master" },  -- HTTP + async helpers
+    },
+    build = "make tiktoken",        -- compile the tokenizer (Linux/macOS)
+    opts = {
+      -- any CopilotChat-specific config here (see docs)
+    },
+    -- you can lazy‑load on commands:
+    cmd = {
+      "CopilotChat",
+      "CopilotChatOpen",
+      "CopilotChatToggle",
+    },
+  },
 
 
 
@@ -257,4 +276,3 @@ vim.opt.splitbelow = true
 
 vim.keymap.set("n", "<C-z>", "u", { desc = "Undo last change" })
 vim.keymap.set("n", "<C-S-z>", "<C-r>", { desc = "Redo last change" })
-
