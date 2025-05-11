@@ -17,8 +17,7 @@ if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     "git", "clone", "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", lazypath,
-  })
+    "--branch=stable", lazypath})
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -200,11 +199,22 @@ require("lazy").setup({
   cmd = "Copilot", event = "InsertEnter",
   config = function()
     require("copilot").setup({
-      suggestion = { enabled = true },  -- we’ll use copilot-cmp for suggestions
+      suggestion = {
+        enabled      = true,   -- turn on inline suggestions
+        auto_trigger = true,   -- show as soon as you pause typing
+        keymap = {
+          accept   = "<M-l>",   -- Alt‑l to accept
+          next     = "<M-]>",   -- cycle next
+          prev     = "<M-[>",   -- cycle prev
+          dismiss  = "<C-]>",   -- dismiss
+        },
+      },
       panel = { enabled = false },
+      copilot_node_command = "node",
     })
-  end
+  end,
 },
+
 {
   "zbirenbaum/copilot-cmp",
   dependencies = "zbirenbaum/copilot.lua",
@@ -245,18 +255,23 @@ require("lazy").setup({
     },
     build = "make tiktoken",        -- compile the tokenizer (Linux/macOS)
     opts = {
+
       -- any CopilotChat-specific config here (see docs)
     },
     -- you can lazy‑load on commands:
     cmd = {
-      "CopilotChat",
-      "CopilotChatOpen",
-      "CopilotChatToggle",
-    },
+    "CopilotChat", 
+    "CopilotChatOpen",
+    "CopilotChatToggle",
+    "CopilotChatStop",
+    "CopilotChatReset",
+    "CopilotChatSave",
+    "CopilotChatLoad",
+    "CopilotChatPrompts",
+    "CopilotChatModels",
+    "CopilotChatAgents",    
+        },
   },
-
-
-
 })
 
 -- 7) UI settings
@@ -276,3 +291,5 @@ vim.opt.splitbelow = true
 
 vim.keymap.set("n", "<C-z>", "u", { desc = "Undo last change" })
 vim.keymap.set("n", "<C-S-z>", "<C-r>", { desc = "Redo last change" })
+vim.keymap.set("n", "<C-a>", "ggVG", { desc = "Select all text" })
+
